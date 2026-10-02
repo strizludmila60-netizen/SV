@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математика 5 клас — Кути (§5, №200°-213°) | Інноваційний симулятор</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .tab-btn.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 4px 12px -2px rgba(2, 132, 199, 0.35);
+        }
+        
+        /* 3D Flashcard styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-sky-700 via-brand-600 to-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
+                    <i class="fa-solid fa-shapes text-2xl text-amber-300"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-extrabold text-xl sm:text-2xl tracking-tight">Математика 5 клас</h1>
+                        <span class="bg-amber-400 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Н.А. Тарасенкова</span>
+                    </div>
+                    <p class="text-xs text-sky-100 font-medium">§ 5. Кути та їх вимірювання — Завдання №200° – №213°</p>
+                </div>
+            </div>
+
+            <!-- Global Quick Search -->
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="global-search" placeholder="Пошук номеру (200, 204, 212)..." 
+                           class="w-full pl-9 pr-3 py-1.5 rounded-xl text-sm bg-white/15 border border-white/25 text-white placeholder-sky-200 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-sky-200"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs Bar -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[68px] z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 overflow-x-auto py-2.5 custom-scrollbar">
+            <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn active px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-compass-drafting text-amber-300"></i>
+                <span>Симулятор Побудови Кутів</span>
+            </button>
+            <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-4 py-2 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-100 transition-all duration-200 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-clone text-sky-500"></i>
+                <span>Інтерактивні Флеш-картки</span>
+            </button>
+            <button onclick="switchTab('solutions')" id="tab-solutions" class="tab-btn px-4 py-2 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-100 transition-all duration-200 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-book-open-reader text-emerald-500"></i>
+                <span>Задачі №200°–213° з калькулятором</span>
+            </button>
+            <button onclick="switchTab('clock')" id="tab-clock" class="tab-btn px-4 py-2 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-100 transition-all duration-200 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-clock text-indigo-500"></i>
+                <span>Лабораторія Годинника (№213*)</span>
+            </button>
+            <button onclick="switchTab('teacher')" id="tab-teacher" class="tab-btn px-4 py-2 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-100 transition-all duration-200 flex items-center space-x-2 whitespace-nowrap">
+                <i class="fa-solid fa-chalkboard-user text-purple-500"></i>
+                <span>Кабінет Вчителя-Новатора</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- TAB 1: INTERACTIVE SIMULATOR -->
+        <section id="sec-simulator" class="space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-sky-200">Симулятор-лабораторія</span>
+                            <h2 class="text-xl font-bold text-slate-800">Побудова кутів та променів (Властивість додавання кутів)</h2>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Візуалізація задач №200°, №201°, №204°, №205°, №206°, №210°, №211°</p>
+                    </div>
+
+                    <!-- Preset Selector for Homework Tasks -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="loadSimulatorPreset('200')" class="px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-bold rounded-lg border border-sky-200 transition">№200° (Кути по обидва боки)</button>
+                        <button onclick="loadSimulatorPreset('204_1')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">№204° (38° + 44°)</button>
+                        <button onclick="loadSimulatorPreset('206')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 transition">№206° (2 розв'язки)</button>
+                        <button onclick="loadSimulatorPreset('210_3')" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200 transition">№210° (Поділ 90°)</button>
+                        <button onclick="loadSimulatorPreset('211_2')" class="px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-800 text-xs font-bold rounded-lg border border-purple-200 transition">№211° (Поділ 180°)</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Canvas Box -->
+                    <div class="lg:col-span-2 bg-slate-900 rounded-2xl p-4 flex flex-col items-center justify-center relative shadow-inner min-h-[380px]">
+                        <canvas id="simCanvas" width="560" height="360" class="max-w-full h-auto rounded-xl bg-slate-950 border border-slate-800 cursor-crosshair"></canvas>
+                        
+                        <div class="w-full flex justify-between items-center mt-3 text-xs text-slate-400 px-2">
+                            <span><i class="fa-solid fa-circle-info text-sky-400 mr-1"></i> Змінюйте кути кутовими слайдерами</span>
+                            <span id="canvas-status-tag" class="text-amber-400 font-mono">Режим: Внутрішній промінь (∠AOC = ∠AOB + ∠BOC)</span>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Controls & Live Math Dashboard -->
+                    <div class="space-y-4 flex flex-col justify-between">
+                        <!-- Mathematical Formula Card -->
+                        <div class="bg-gradient-to-br from-slate-900 via-sky-950 to-indigo-950 text-white rounded-2xl p-5 shadow-md border border-slate-800 space-y-3">
+                            <span class="text-[11px] font-bold uppercase tracking-widest text-sky-300">Основна властивість:</span>
+                            
+                            <div class="text-center bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10 font-mono">
+                                <span class="text-xl font-bold text-amber-300" id="sim-formula-display">∠ AOC = ∠ AOB + ∠ BOC</span>
+                            </div>
+
+                            <div class="space-y-2 text-xs pt-1">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300">Кут №1 (∠ AOB):</span>
+                                    <span id="val-angle1" class="font-bold text-sky-300 font-mono text-sm">38°</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300">Кут №2 (∠ BOC):</span>
+                                    <span id="val-angle2" class="font-bold text-emerald-300 font-mono text-sm">44°</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-white/10 pt-2 font-bold">
+                                    <span class="text-slate-200">Весь кут (∠ AOC):</span>
+                                    <span id="val-angleTotal" class="text-amber-300 font-mono text-base">82°</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sliders Controls -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-4 text-xs">
+                            <div>
+                                <div class="flex justify-between font-bold text-slate-700 mb-1">
+                                    <label for="sliderA">Кут 1 (∠ AOB):</label>
+                                    <span id="labelA" class="text-sky-600 font-mono">38°</span>
+                                </div>
+                                <input type="range" id="sliderA" min="1" max="179" value="38" class="w-full accent-sky-600 cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between font-bold text-slate-700 mb-1">
+                                    <label for="sliderB">Кут 2 (∠ BOC):</label>
+                                    <span id="labelB" class="text-emerald-600 font-mono">44°</span>
+                                </div>
+                                <input type="range" id="sliderB" min="1" max="179" value="44" class="w-full accent-emerald-600 cursor-pointer">
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-200">
+                                <label class="font-bold text-slate-700 block mb-1">Тип розбиття кута:</label>
+                                <select id="simModeSelect" onchange="changeSimMode()" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-sky-500">
+                                    <option value="inner">1. Внутрішній промінь (Додавання кутів)</option>
+                                    <option value="opposite">2. Промені по обидва боки (№200°)</option>
+                                    <option value="equal_parts">3. Поділ кута на N рівних частин (№210, №211)</option>
+                                </select>
+                            </div>
+
+                            <!-- Parts count controls for equal parts -->
+                            <div id="parts-control-box" class="hidden space-y-1">
+                                <div class="flex justify-between font-bold text-slate-700">
+                                    <span>Кількість рівних частин (N):</span>
+                                    <span id="partsNumDisplay" class="text-purple-600 font-bold font-mono">3</span>
+                                </div>
+                                <input type="range" id="partsSlider" min="2" max="10" value="3" oninput="updateSimulator()" class="w-full accent-purple-600 cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FLASHCARDS -->
+        <section id="sec-flashcards" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-clone text-sky-500"></i>
+                            Інтерактивні Флеш-картки за №200°–213°
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Клікніть на картку, щоб перевернути її та перевірити відповідь</p>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0">
+                        <button onclick="filterFlashcards('all')" class="fc-filter active px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition">Усі картки</button>
+                        <button onclick="filterFlashcards('types')" class="fc-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Види кутів (№202°, 203°)</button>
+                        <button onclick="filterFlashcards('addition')" class="fc-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Додавання кутів (№200°, 204°, 205°)</button>
+                        <button onclick="filterFlashcards('division')" class="fc-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Поділ кутів (№210°, 211°)</button>
+                        <button onclick="filterFlashcards('star')" class="fc-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">З зірочкою (№212*, 213*)</button>
+                    </div>
+                </div>
+
+                <!-- Flashcards Grid -->
+                <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards injected by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SOLUTIONS & TASK LAB -->
+        <section id="sec-solutions" class="hidden space-y-6">
+            <div class="bg-sky-900 text-white p-6 rounded-2xl shadow-lg border border-sky-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="bg-amber-400 text-slate-900 text-xs font-extrabold px-2.5 py-0.5 rounded-full">Підручник Тарасенкова</span>
+                        <span class="bg-sky-800 text-sky-200 text-xs font-bold px-2.5 py-0.5 rounded-full border border-sky-700">Завдання з голубою позначкою (°)</span>
+                    </div>
+                    <h2 class="text-xl font-black text-white tracking-tight">Повний розв'язник вправ №200° – №213°</h2>
+                    <p class="text-xs text-sky-200 mt-1">З інноваційними інтерактивними мікро-калькуляторами для самоперевірки</p>
+                </div>
+                
+                <div class="bg-sky-950/80 px-4 py-2.5 rounded-xl border border-sky-800/80 text-xs text-sky-200 font-mono">
+                    Всього завдань у блоці: <span class="text-amber-300 font-bold text-sm">14 задач</span>
+                </div>
+            </div>
+
+            <!-- Task Cards Grid -->
+            <div id="tasks-solutions-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Solutions injected dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 4: CLOCK LAB -->
+        <section id="sec-clock" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-indigo-200">Задача №213*</span>
+                            <h2 class="text-xl font-bold text-slate-800">Інтерактивна Годинникова Лабораторія</h2>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Дослідіть кут між стрілками годинника у будь-який момент часу</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setClockLabTime(2, 30)" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200 transition">02:30 (Прихід зі школи)</button>
+                        <button onclick="setClockLabTime(3, 0)" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200 transition">03:00 (Бій годинника - 90°)</button>
+                        <button onclick="setClockLabTime(8, 30)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition">08:30 (75° - не підходить)</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col items-center justify-center">
+                        <canvas id="clockCanvas" width="300" height="300" class="max-w-full h-auto drop-shadow-xl"></canvas>
+                        
+                        <div class="mt-5 flex items-center space-x-4 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                            <div class="text-center">
+                                <span class="text-[10px] text-slate-400 font-bold block uppercase">Години</span>
+                                <input type="number" id="clock-h" min="1" max="12" value="2" oninput="drawClockLab()" class="w-16 text-center bg-slate-900 border border-slate-700 rounded-lg py-1 text-sm font-bold text-white focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <span class="text-xl font-bold text-slate-500">:</span>
+                            <div class="text-center">
+                                <span class="text-[10px] text-slate-400 font-bold block uppercase">Хвилини</span>
+                                <input type="number" id="clock-m" min="0" max="59" value="30" oninput="drawClockLab()" class="w-16 text-center bg-slate-900 border border-slate-700 rounded-lg py-1 text-sm font-bold text-white focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-800/80 shadow-lg space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-indigo-300 font-bold uppercase tracking-wider">Градусна міра кута:</span>
+                                <span id="clock-type-badge" class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-400/20 text-amber-300 border border-amber-400/30">Тупий кут</span>
+                            </div>
+
+                            <div class="text-5xl font-black text-amber-300 font-mono tracking-tight" id="clock-deg-val">
+                                105°
+                            </div>
+
+                            <div class="p-3 bg-indigo-950/80 rounded-xl border border-indigo-800/50 text-xs text-indigo-200 font-mono space-y-1">
+                                <div>• 1 година на циферблаті = <span class="text-amber-300">30°</span></div>
+                                <div>• 1 хвилина годинної стрілки = <span class="text-amber-300">0.5°</span></div>
+                                <div>• 1 хвилина хвилинної стрілки = <span class="text-amber-300">6°</span></div>
+                            </div>
+
+                            <p class="text-xs text-indigo-100 leading-relaxed bg-white/5 p-3 rounded-xl border border-white/10" id="clock-exp-box">
+                                О 02:30 годинна стрілка пройшла половину шляху між 2 і 3. Кут між ними дорівнює 3.5 × 30° = 105°.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: TEACHER CABINET -->
+        <section id="sec-teacher" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Кабінет Вчителя-Новатора</h2>
+                        <p class="text-xs text-slate-500">Методичні підказки, інтерактивні прийоми та конструктор бліц-опитувань до §5 (№200°–213°)</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Methodic Card 1 -->
+                    <div class="bg-purple-50 p-5 rounded-2xl border border-purple-200 space-y-3">
+                        <div class="flex items-center gap-2 text-purple-900 font-bold text-sm">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                            Прийом «Візуальний жест»
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            Пояснюючи кути по обидва боки від променя (<strong>№200°</strong>), розведіть руки з однієї точки (плеча). Права рука — кут 45°, ліва — 65°. Запитайте учнів: «Який загальний кут утворився між кистями?». Додаємо кути: 45° + 65° = 110°!
+                        </p>
+                    </div>
+
+                    <!-- Methodic Card 2 -->
+                    <div class="bg-sky-50 p-5 rounded-2xl border border-sky-200 space-y-3">
+                        <div class="flex items-center gap-2 text-sky-900 font-bold text-sm">
+                            <i class="fa-solid fa-code-branch text-sky-600"></i>
+                            Логічна пастка №206°
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            Запропонуйте учням намалювати кут ABC = 80° та провести BD під кутом 30°. Більшість проведе промінь ВСЕРЕДИНІ (80° - 30° = 50°). Спонукайте їх знайти ДРУГИЙ розв'язок зовні (80° + 30° = 110°). Це формує гнучкість мислення!
+                        </p>
+                    </div>
+
+                    <!-- Methodic Card 3 -->
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 space-y-3">
+                        <div class="flex items-center gap-2 text-amber-900 font-bold text-sm">
+                            <i class="fa-solid fa-puzzle-piece text-amber-600"></i>
+                            Практикум з папером (№207°)
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            Дайте кожномучневі аркуш А4. Перше згинання навпіл утворює 90° (прямий кут). Друге згинання кута навпіл утворює бісектрису та кут 45°. Практичне відчуття геометрії запам'ятовується на все життя.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive Classroom Quick Quiz Generator -->
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-md border border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-base text-amber-300 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Генератор Бліц-Запитань для Уроку
+                        </h3>
+                        <button onclick="generateRandomClassQuestion()" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition shadow">
+                            Згенерувати нове запитання
+                        </button>
+                    </div>
+
+                    <div id="class-question-box" class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-sm font-medium leading-relaxed">
+                        Натисніть кнопку вище, щоб згенерувати випадкове математичне запитання з вправ 200°-213° для опитування класу!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p class="text-slate-300 font-semibold">Інтерактивний навчальний комплекс з математики для 5 класу</p>
+            <p class="text-slate-500">За підручником Н.А. Тарасенкова (Розділ 2, §5 «Кути та їх вимірювання», Вправи №200° – №213°)</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- TASK DATABASE (200° to 213°) ---
+        const taskDatabase = [
+            {
+                id: "200",
+                degMark: true,
+                title: "Вправа 200°",
+                desc: "Проведіть промінь OM. За допомогою транспортира по один бік від променя OM побудуйте ∠ MON = 45°, а по інший бік ∠ MOK = 65°. Чому дорівнює градусна міра кута NOK?",
+                calcType: "sum_opposite",
+                defA: 45,
+                defB: 65,
+                solution: `
+                    <p>Оскільки кути ∠ MON та ∠ MOK побудовані по <strong>різні боки</strong> від спільного променя OM, то промінь OM лежить між ними.</p>
+                    <p class="font-mono text-xs bg-slate-100 p-2 rounded my-1 text-slate-800">∠ NOK = ∠ MON + ∠ MOK = 45° + 65° = 110°.</p>
+                    <div class="p-2.5 bg-sky-50 border border-sky-200 text-sky-900 rounded-lg font-bold">Відповідь: ∠ NOK = 110°.</div>
+                `
+            },
+            {
+                id: "201",
+                degMark: true,
+                title: "Вправа 201°",
+                desc: "Побудуйте ∠ AOB = 120°. Проведіть внутрішній промінь OC так, щоб ∠ AOC = 50°. Чому дорівнює градусна міра кута BOC?",
+                calcType: "diff",
+                defA: 120,
+                defB: 50,
+                solution: `
+                    <p>Оскільки OC — внутрішній промінь кута AOB, за властивістю додавання кутів:</p>
+                    <p class="font-mono text-xs bg-slate-100 p-2 rounded my-1 text-slate-800">∠ AOB = ∠ AOC + ∠ BOC &rArr; ∠ BOC = ∠ AOB - ∠ AOC</p>
+                    <p class="font-mono text-xs bg-slate-100 p-2 rounded my-1 text-slate-800">∠ BOC = 120° - 50° = 70°.</p>
+                    <div class="p-2.5 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-lg font-bold">Відповідь: ∠ BOC = 70°.</div>
+                `
+            },
+            {
+                id: "202",
+                degMark: true,
+                title: "Вправа 202°",
+                desc: "Якого виду є кут, якщо його градусна міра дорівнює: 1) 90°; 2) 127°; 3) 180°; 4) 115°; 5) 91°; 6) 47°?",
+                calcType: "none",
+                solution: `
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2 bg-blue-50 rounded border border-blue-200">1) 90° — <strong>Прямий</strong></div>
+                        <div class="p-2 bg-amber-50 rounded border border-amber-200">2) 127° — <strong>Тупий</strong></div>
+                        <div class="p-2 bg-purple-50 rounded border border-purple-200">3) 180° — <strong>Розгорнутий</strong></div>
+                        <div class="p-2 bg-amber-50 rounded border border-amber-200">4) 115° — <strong>Тупий</strong></div>
+                        <div class="p-2 bg-amber-50 rounded border border-amber-200">5) 91° — <strong>Тупий</strong></div>
+                        <div class="p-2 bg-emerald-50 rounded border border-emerald-200">6) 47° — <strong>Гострий</strong></div>
+                    </div>
+                `
+            },
+            {
+                id: "203",
+                degMark: true,
+                title: "Вправа 203°",
+                desc: "Назвіть вид кута, якщо його градусна міра дорівнює: 1) 15°; 2) 89°; 3) 90°; 4) 92°; 5) 179°; 6) 180°.",
+                calcType: "none",
+                solution: `
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2 bg-emerald-50 rounded border border-emerald-200">1) 15° — <strong>Гострий</strong></div>
+                        <div class="p-2 bg-emerald-50 rounded border border-emerald-200">2) 89° — <strong>Гострий</strong></div>
+                        <div class="p-2 bg-blue-50 rounded border border-blue-200">3) 90° — <strong>Прямий</strong></div>
+                        <div class="p-2 bg-amber-50 rounded border border-amber-200">4) 92° — <strong>Тупий</strong></div>
+                        <div class="p-2 bg-amber-50 rounded border border-amber-200">5) 179° — <strong>Тупий</strong></div>
+                        <div class="p-2 bg-purple-50 rounded border border-purple-200">6) 180° — <strong>Розгорнутий</strong></div>
+                    </div>
+                `
+            },
+            {
+                id: "204",
+                degMark: true,
+                title: "Вправа 204°",
+                desc: "Промінь OB — внутрішній промінь кута AOC. Знайдіть: 1) ∠ AOC, якщо ∠ AOB = 38° і ∠ BOC = 44°; 2) ∠ AOB, якщо ∠ AOC = 124° і ∠ BOC = 33°; 3) ∠ BOC, якщо ∠ AOB = 62° і ∠ AOC = 72°.",
+                calcType: "task204_calc",
+                solution: `
+                    <div class="space-y-1 text-slate-700">
+                        <p><strong>1)</strong> ∠ AOC = ∠ AOB + ∠ BOC = 38° + 44° = <strong>82°</strong>.</p>
+                        <p><strong>2)</strong> ∠ AOB = ∠ AOC - ∠ BOC = 124° - 33° = <strong>91°</strong> (тупий).</p>
+                        <p><strong>3)</strong> ∠ BOC = ∠ AOC - ∠ AOB = 72° - 62° = <strong>10°</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                id: "205",
+                degMark: true,
+                title: "Вправа 205°",
+                desc: "Промінь ON — внутрішній промінь ∠ MOK. Знайдіть: 1) ∠ MOK, якщо ∠ MON = 71° і ∠ NOK = 56°; 2) ∠ MON, якщо ∠ MOK = 94° і ∠ NOK = 57°.",
+                calcType: "none",
+                solution: `
+                    <div class="space-y-1 text-slate-700">
+                        <p><strong>1)</strong> ∠ MOK = 71° + 56° = <strong>127°</strong>.</p>
+                        <p><strong>2)</strong> ∠ MON = 94° - 57° = <strong>37°</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                id: "206",
+                degMark: true,
+                title: "Вправа 206°",
+                desc: "Побудуйте ∠ ABC = 80°. Проведіть промінь BD так, щоб ∠ ABD = 30°. Скільки розв'язків має задача?",
+                calcType: "none",
+                solution: `
+                    <div class="space-y-2 text-slate-700">
+                        <p class="font-bold text-amber-800">Задача має 2 розв'язки!</p>
+                        <ul class="list-disc pl-5 space-y-1 text-xs">
+                            <li><strong>Випадок 1:</strong> Промінь BD лежить всередині кута ABC &rArr; ∠ DBC = 80° - 30° = <strong>50°</strong>.</li>
+                            <li><strong>Випадок 2:</strong> Промінь BD лежить зовні кута ABC &rArr; ∠ DBC = 80° + 30° = <strong>110°</strong>.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                id: "207",
+                degMark: true,
+                title: "Вправа 207°",
+                desc: "Як, згинаючи аркуш паперу, можна одержати кут, що дорівнює 45°?",
+                calcType: "none",
+                solution: `
+                    <p class="text-slate-700 text-xs leading-relaxed">
+                        1) Зігніть аркуш довільно навпіл, утворивши прямий кут (90°).<br>
+                        2) Зігніть отриманий прямий кут ще раз навпіл, сумістивши його сторони. Оскільки 90° : 2 = <strong>45°</strong>, отримаємо кут 45°.
+                    </p>
+                `
+            },
+            {
+                id: "208",
+                degMark: false,
+                title: "Вправа 208",
+                desc: "Промінь BD ділить кут ABC навпіл. Знайдіть ∠ ABD, якщо ∠ ABC = 76°.",
+                calcType: "none",
+                solution: `
+                    <p class="text-slate-700 text-xs">Оскільки промінь BD ділить кут навпіл (є бісектрисою), то ∠ ABD = 76° : 2 = <strong>38°</strong>.</p>
+                `
+            },
+            {
+                id: "210",
+                degMark: false,
+                title: "Вправа 210",
+                desc: "Прямий кут (90°) поділили внутрішніми променями на рівні кути. Знайдіть градусну міру цих кутів, якщо одержано: 1) 2 кути; 2) 3 кути; 3) 5 кутів.",
+                calcType: "none",
+                solution: `
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                        <li>1) 2 кути: 90° : 2 = <strong>45°</strong></li>
+                        <li>2) 3 кути: 90° : 3 = <strong>30°</strong></li>
+                        <li>3) 5 кутів: 90° : 5 = <strong>18°</strong></li>
+                    </ul>
+                `
+            },
+            {
+                id: "211",
+                degMark: false,
+                title: "Вправа 211",
+                desc: "Розгорнутий кут (180°) поділили внутрішніми променями на рівні кути. Знайдіть градусну міру цих кутів, якщо одержано: 1) 2 кути; 2) 4 кути; 3) 6 кутів.",
+                calcType: "none",
+                solution: `
+                    <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                        <li>1) 2 кути: 180° : 2 = <strong>90°</strong></li>
+                        <li>2) 4 кути: 180° : 4 = <strong>45°</strong></li>
+                        <li>3) 6 кутів: 180° : 6 = <strong>30°</strong></li>
+                    </ul>
+                `
+            },
+            {
+                id: "212",
+                degMark: false,
+                title: "Вправа 212*",
+                desc: "У розгорнутому куті AOD проведено внутрішні промені OB і OC. Знайдіть градусну міру кута AOB, якщо ∠ BOC = 90° і ∠ AOB = ∠ COD.",
+                calcType: "none",
+                solution: `
+                    <div class="space-y-1 text-xs text-slate-700">
+                        <p>Кут AOD = 180°. Сума його трьох частин: ∠ AOB + ∠ BOC + ∠ COD = 180°.</p>
+                        <p>Нехай ∠ AOB = x. Оскільки ∠ AOB = ∠ COD, то: x + 90° + x = 180° &rArr; 2x = 90° &rArr; x = <strong>45°</strong>.</p>
+                        <div class="p-2 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded font-bold">Відповідь: ∠ AOB = 45°.</div>
+                    </div>
+                `
+            },
+            {
+                id: "213",
+                degMark: false,
+                title: "Вправа 213*",
+                desc: "Коли Сергійко прийшов зі школи, кут між стрілками годинника був тупим. Рівно за пів години годинник пробив. У цей момент кут між стрілками став прямим. О котрій годині Сергійко прийшов зі школи?",
+                calcType: "none",
+                solution: `
+                    <div class="space-y-1 text-xs text-slate-700">
+                        <p>Бій годинника лунає о цілій годині. Кут 90° (прямий) між стрілками о цілій годині буває лише о 3:00 та 9:00.</p>
+                        <p>За пів години до 3:00 (о 02:30) кут дорівнює <strong>105° (тупий)</strong>. Це повністю задовольняє умову!</p>
+                        <div class="p-2 bg-indigo-50 border border-indigo-200 text-indigo-950 rounded font-bold">Відповідь: О 2:30 (або 14:30).</div>
+                    </div>
+                `
+            }
+        ];
+
+        // --- FLASHCARDS DATA ---
+        const flashcardsData = [
+            {
+                cat: "types",
+                front: "Який кут називають прямим? Яка його градусна міра?",
+                back: "Прямий кут дорівнює точно 90°. На малюнках позначається квадратиком ∟."
+            },
+            {
+                cat: "types",
+                front: "Вправа 202°: Якого вида кути 91° та 89°?",
+                back: "91° — Тупий кут (більший за 90°).\n89° — Гострий кут (менший за 90°)."
+            },
+            {
+                cat: "addition",
+                front: "Властивість додавання кутів (Вправа 204°)",
+                back: "Якщо промінь OB — внутрішній промінь ∠ AOC, то градусна міра всього кута дорівнює сумі частин: ∠ AOC = ∠ AOB + ∠ BOC."
+            },
+            {
+                cat: "addition",
+                front: "Вправа 200°: Промені по обидва боки від OM",
+                back: "Якщо ∠ MON = 45° і ∠ MOK = 65° побудовані по різні боки від OM, то ∠ NOK = 45° + 65° = 110°."
+            },
+            {
+                cat: "division",
+                front: "Вправа 210°: Поділ прямого кута (90°) на 3 рівні частини",
+                back: "Градусна міра кожного з трьох кутів дорівнює: 90° : 3 = 30°."
+            },
+            {
+                cat: "division",
+                front: "Вправа 211°: Поділ розгорнутого кута (180°) на 4 рівні частини",
+                back: "Градусна міра кожного з чотирьох кутів дорівнює: 180° : 4 = 45°."
+            },
+            {
+                cat: "star",
+                front: "Вправа 213*: Який кут між стрілками годинника о 02:30?",
+                back: "105° (тупий кут). Годинна стрілка стоїть між 2 і 3 (75° від 12), а хвилинна на 6 (180°). 180° - 75° = 105°."
+            }
+        ];
+
+        // --- SIMULATOR CANVAS CODE ---
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let simAngleA = 38;
+        let simAngleB = 44;
+        let simMode = 'inner'; // 'inner', 'opposite', 'equal_parts'
+
+        document.getElementById('sliderA').addEventListener('input', (e) => {
+            simAngleA = parseInt(e.target.value);
+            updateSimulator();
+        });
+
+        document.getElementById('sliderB').addEventListener('input', (e) => {
+            simAngleB = parseInt(e.target.value);
+            updateSimulator();
+        });
+
+        function changeSimMode() {
+            simMode = document.getElementById('simModeSelect').value;
+            const partsBox = document.getElementById('parts-control-box');
+            if (simMode === 'equal_parts') {
+                partsBox.classList.remove('hidden');
+            } else {
+                partsBox.classList.add('hidden');
+            }
+            updateSimulator();
+        }
+
+        function loadSimulatorPreset(type) {
+            document.getElementById('simModeSelect').value = 'inner';
+            document.getElementById('parts-control-box').classList.add('hidden');
+
+            if (type === '200') {
+                document.getElementById('simModeSelect').value = 'opposite';
+                simMode = 'opposite';
+                simAngleA = 45;
+                simAngleB = 65;
+            } else if (type === '204_1') {
+                simMode = 'inner';
+                simAngleA = 38;
+                simAngleB = 44;
+            } else if (type === '206') {
+                simMode = 'inner';
+                simAngleA = 80;
+                simAngleB = 30;
+            } else if (type === '210_3') {
+                document.getElementById('simModeSelect').value = 'equal_parts';
+                simMode = 'equal_parts';
+                simAngleA = 90;
+                document.getElementById('partsSlider').value = 3;
+            } else if (type === '211_2') {
+                document.getElementById('simModeSelect').value = 'equal_parts';
+                simMode = 'equal_parts';
+                simAngleA = 180;
+                document.getElementById('partsSlider').value = 4;
+            }
+
+            document.getElementById('sliderA').value = simAngleA;
+            document.getElementById('sliderB').value = simAngleB;
+            updateSimulator();
+        }
+
+        function updateSimulator() {
+            document.getElementById('labelA').innerText = `${simAngleA}°`;
+            document.getElementById('labelB').innerText = `${simAngleB}°`;
+
+            document.getElementById('val-angle1').innerText = `${simAngleA}°`;
+            document.getElementById('val-angle2').innerText = `${simAngleB}°`;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const ox = canvas.width / 2;
+            const oy = canvas.height - 60;
+            const rayLen = 180;
+
+            if (simMode === 'inner') {
+                const totalDeg = Math.min(180, simAngleA + simAngleB);
+                document.getElementById('val-angleTotal').innerText = `${simAngleA + simAngleB}°`;
+                document.getElementById('sim-formula-display').innerText = `∠ AOC = ∠ AOB + ∠ BOC (${simAngleA + simAngleB}°)`;
+                document.getElementById('canvas-status-tag').innerText = "Режим: Внутрішній промінь OB";
+
+                // Base Ray OA (at 0 deg)
+                drawRay(ox, oy, 0, rayLen, "#38bdf8", "A");
+                // Middle Ray OB (at simAngleA deg)
+                drawRay(ox, oy, simAngleA, rayLen, "#34d399", "B");
+                // Top Ray OC (at simAngleA + simAngleB deg)
+                drawRay(ox, oy, simAngleA + simAngleB, rayLen, "#fbbf24", "C");
+
+                // Arcs
+                drawAngleArc(ox, oy, 0, simAngleA, 50, "rgba(56, 189, 248, 0.2)", "#38bdf8");
+                drawAngleArc(ox, oy, simAngleA, simAngleA + simAngleB, 70, "rgba(52, 211, 153, 0.2)", "#34d399");
+
+            } else if (simMode === 'opposite') {
+                document.getElementById('val-angleTotal').innerText = `${simAngleA + simAngleB}°`;
+                document.getElementById('sim-formula-display').innerText = `∠ NOK = ∠ MON + ∠ MOK (${simAngleA + simAngleB}°)`;
+                document.getElementById('canvas-status-tag').innerText = "Режим: Промені по обидва боки від OM (№200°)";
+
+                // Middle base Ray OM
+                const baseRad = 90; // pointing straight up
+                drawRayRad(ox, oy, baseRad, rayLen, "#f43f5e", "M");
+                drawRayRad(ox, oy, baseRad - simAngleA, rayLen, "#38bdf8", "N");
+                drawRayRad(ox, oy, baseRad + simAngleB, rayLen, "#34d399", "K");
+
+            } else if (simMode === 'equal_parts') {
+                const N = parseInt(document.getElementById('partsSlider').value);
+                document.getElementById('partsNumDisplay').innerText = N;
+                const partDeg = (simAngleA / N).toFixed(1);
+                
+                document.getElementById('val-angleTotal').innerText = `${simAngleA}° (Кожен = ${partDeg}°)`;
+                document.getElementById('sim-formula-display').innerText = `${simAngleA}° : ${N} = ${partDeg}°`;
+                document.getElementById('canvas-status-tag').innerText = `Режим: Поділ кута ${simAngleA}° на ${N} рівних частин`;
+
+                drawRay(ox, oy, 0, rayLen, "#38bdf8", "A");
+                for (let i = 1; i <= N; i++) {
+                    const currentDeg = (simAngleA / N) * i;
+                    const color = i === N ? "#fbbf24" : "#a855f7";
+                    drawRay(ox, oy, currentDeg, rayLen, color, i === N ? "B" : `P${i}`);
+                }
+            }
+
+            // Draw Vertex O
+            ctx.beginPath();
+            ctx.arc(ox, oy, 6, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.font = "bold 14px Inter";
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText("O", ox - 15, oy + 20);
+        }
+
+        function drawRay(ox, oy, angleDeg, len, color, label) {
+            const rad = (180 - angleDeg) * Math.PI / 180;
+            const rx = ox + len * Math.cos(rad);
+            const ry = oy - len * Math.sin(rad);
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(rx, ry);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = color;
+            ctx.stroke();
+
+            ctx.font = "bold 13px Inter";
+            ctx.fillStyle = color;
+            ctx.fillText(label, rx + (rx >= ox ? 10 : -20), ry + (ry >= oy ? 15 : -10));
+        }
+
+        function drawRayRad(ox, oy, angleDeg, len, color, label) {
+            const rad = angleDeg * Math.PI / 180;
+            const rx = ox + len * Math.cos(rad);
+            const ry = oy - len * Math.sin(rad);
+
+            ctx.beginPath();
+            ctx.moveTo(ox, oy);
+            ctx.lineTo(rx, ry);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = color;
+            ctx.stroke();
+
+            ctx.font = "bold 13px Inter";
+            ctx.fillStyle = color;
+            ctx.fillText(label, rx + 8, ry - 8);
+        }
+
+        function drawAngleArc(ox, oy, startDeg, endDeg, r, fillColor, strokeColor) {
+            const startRad = (180 - startDeg) * Math.PI / 180;
+            const endRad = (180 - endDeg) * Math.PI / 180;
+
+            ctx.beginPath();
+            ctx.arc(ox, oy, r, startRad, endRad, true);
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // --- RENDER SOLUTIONS ---
+        function renderTasksSolutions() {
+            const container = document.getElementById('tasks-solutions-container');
+            container.innerHTML = '';
+
+            taskDatabase.forEach(task => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4 hover:shadow-md transition";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black px-3 py-1 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
+                                ${task.title}
+                            </span>
+                            ${task.degMark ? '<span class="text-[11px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded border border-sky-100">Блакитна позначка (°)</span>' : ''}
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-800 font-medium leading-relaxed">
+                        ${task.desc}
+                    </p>
+
+                    <div class="pt-2 border-t border-slate-100 text-xs">
+                        <div class="text-slate-500 font-bold mb-1.5 flex items-center gap-1">
+                            <i class="fa-solid fa-check-circle text-emerald-500"></i> Покрокове розв'язання:
+                        </div>
+                        ${task.solution}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- RENDER FLASHCARDS ---
+        function renderFlashcards(filter = 'all') {
+            const grid = document.getElementById('flashcards-grid');
+            grid.innerHTML = '';
+
+            const list = filter === 'all' ? flashcardsData : flashcardsData.filter(c => c.cat === filter);
+
+            list.forEach(card => {
+                const cardEl = document.createElement('div');
+                cardEl.className = "flashcard h-52 cursor-pointer perspective-1000";
+                cardEl.onclick = () => cardEl.classList.toggle('flipped');
+
+                cardEl.innerHTML = `
+                    <div class="flashcard-inner rounded-2xl shadow-md border border-slate-200">
+                        <!-- Front -->
+                        <div class="flashcard-front bg-gradient-to-br from-sky-600 to-indigo-700 text-white p-6 flex flex-col justify-between items-center text-center">
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-sky-200">Запитання / Умова</span>
+                            <p class="text-sm font-bold leading-snug my-auto">${card.front}</p>
+                            <span class="text-[11px] text-sky-200 opacity-80 flex items-center gap-1">
+                                <i class="fa-solid fa-rotate mr-1"></i> Клацніть, щоб дізнатися відповідь
+                            </span>
+                        </div>
+
+                        <!-- Back -->
+                        <div class="flashcard-back bg-slate-900 text-white p-6 flex flex-col justify-between items-center text-center border border-slate-800">
+                            <span class="text-[10px] uppercase font-bold tracking-widest text-emerald-400">Правильне розв'язання</span>
+                            <p class="text-xs font-medium leading-relaxed my-auto text-slate-200 whitespace-pre-line">${card.back}</p>
+                            <span class="text-[11px] text-amber-300 font-bold">Готово!</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function filterFlashcards(cat) {
+            document.querySelectorAll('.fc-filter').forEach(b => {
+                b.className = "fc-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+            });
+            event.target.className = "fc-filter active px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition";
+            renderFlashcards(cat);
+        }
+
+        // --- CLOCK LAB CODE ---
+        function setClockLabTime(h, m) {
+            document.getElementById('clock-h').value = h;
+            document.getElementById('clock-m').value = m;
+            drawClockLab();
+        }
+
+        function drawClockLab() {
+            const h = parseInt(document.getElementById('clock-h').value) || 0;
+            const m = parseInt(document.getElementById('clock-m').value) || 0;
+
+            const c = document.getElementById('clockCanvas');
+            const cctx = c.getContext('2d');
+            cctx.clearRect(0, 0, c.width, c.height);
+
+            const cx = c.width / 2;
+            const cy = c.height / 2;
+            const cr = 120;
+
+            // Clock Dial
+            cctx.beginPath();
+            cctx.arc(cx, cy, cr, 0, Math.PI * 2);
+            cctx.fillStyle = "#0f172a";
+            cctx.fill();
+            cctx.lineWidth = 4;
+            cctx.strokeStyle = "#38bdf8";
+            cctx.stroke();
+
+            // Numbers
+            cctx.font = "bold 13px Inter";
+            cctx.fillStyle = "#94a3b8";
+            cctx.textAlign = "center";
+            cctx.textBaseline = "middle";
+            for (let num = 1; num <= 12; num++) {
+                const ang = num * (Math.PI / 6);
+                const nx = cx + (cr - 20) * Math.sin(ang);
+                const ny = cy - (cr - 20) * Math.cos(ang);
+                cctx.fillText(num.toString(), nx, ny);
+            }
+
+            const minAngle = m * 6;
+            const hourAngle = ((h % 12) * 30) + (m * 0.5);
+
+            let diff = Math.abs(hourAngle - minAngle);
+            if (diff > 180) diff = 360 - diff;
+            diff = Math.round(diff * 10) / 10;
+
+            // Hour hand
+            const hRad = (hourAngle - 90) * Math.PI / 180;
+            cctx.beginPath();
+            cctx.moveTo(cx, cy);
+            cctx.lineTo(cx + 60 * Math.cos(hRad), cy + 60 * Math.sin(hRad));
+            cctx.lineWidth = 5;
+            cctx.strokeStyle = "#fbbf24";
+            cctx.stroke();
+
+            // Minute hand
+            const mRad = (minAngle - 90) * Math.PI / 180;
+            cctx.beginPath();
+            cctx.moveTo(cx, cy);
+            cctx.lineTo(cx + 88 * Math.cos(mRad), cy + 88 * Math.sin(mRad));
+            cctx.lineWidth = 3;
+            cctx.strokeStyle = "#38bdf8";
+            cctx.stroke();
+
+            document.getElementById('clock-deg-val').innerText = `${diff}°`;
+
+            const badge = document.getElementById('clock-type-badge');
+            if (diff < 90) badge.innerText = "Гострий кут";
+            else if (diff === 90) badge.innerText = "Прямий кут (90°)";
+            else if (diff < 180) badge.innerText = "Тупий кут";
+            else badge.innerText = "Розгорнутий кут";
+
+            document.getElementById('clock-exp-box').innerText = `Час: ${h}:${m < 10 ? '0' + m : m}. Градусна міра кута між стрілками дорівнює ${diff}°.`;
+        }
+
+        // --- TEACHER GENERATOR ---
+        const teacherQuestions = [
+            "Запитайте клас: Кут між стрілками годинника о 3:00 дорівнює 90°. А який кут буде о 03:30? (Підказка: 75°)",
+            "Бліц-вправа 202°: Учні по черзі називають вид кута: 91° (тупий), 89° (гострий), 90° (прямий), 180° (розгорнутий).",
+            "Запитайте клас: Промінь ділить прямий кут (90°) у відношенні 1:2. Чому дорівнюють ці кути? (Відповідь: 30° та 60°)",
+            "Вправа 206°: Чому задача побудови кута ABD = 30° від кута ABC = 80° має саме ТВОЇ розв'язки?"
+        ];
+
+        function generateRandomClassQuestion() {
+            const idx = Math.floor(Math.random() * teacherQuestions.length);
+            document.getElementById('class-question-box').innerText = teacherQuestions[idx];
+        }
+
+        // --- GLOBAL NAVIGATION ---
+        function switchTab(tabId) {
+            document.querySelectorAll('section[id^="sec-"]').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('text-slate-600', 'hover:bg-slate-100');
+            });
+
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+
+            if (tabId === 'simulator') updateSimulator();
+            if (tabId === 'flashcards') renderFlashcards();
+            if (tabId === 'clock') drawClockLab();
+        }
+
+        // Init page on load
+        window.onload = function() {
+            renderTasksSolutions();
+            renderFlashcards();
+            updateSimulator();
+            drawClockLab();
+        };
+    </script>
+</body>
+</html>
